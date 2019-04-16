@@ -10,18 +10,33 @@ import Foundation
 import UIKit
 import WebKit
 
-class WebViewContainerViewController: UIViewController, WKNavigationDelegate {
-    private let webView = WKWebView(frame: UIScreen.main.bounds)
+class WebViewContainerViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler {
+    private  var webView: WKWebView?
+    private let nameHandleCloseApp = "close"
+    
+    convenience init( ) {
+        self.init(nibName:nil, bundle:nil)
+        
+        let config = WKWebViewConfiguration()
+        let userContentController = WKUserContentController()
+        
+        userContentController.add(self, name: nameHandleCloseApp)
+        
+        config.userContentController = userContentController
+        
+        
+        self.webView = WKWebView(frame: UIScreen.main.bounds, configuration: config)
+    }
 
     override func loadView() {
-        webView.navigationDelegate = self
+        webView?.navigationDelegate = self
         view = webView
     }
 
     func loadRequest(with apiKey: String) {
         guard let url = URL(string: "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com/?apiKey=\(apiKey)")  else { return }
         let request = URLRequest(url: url)
-        webView.load(request)
+        webView?.load(request)
     }
     
     func webView(_ webView: WKWebView,
@@ -32,6 +47,13 @@ class WebViewContainerViewController: UIViewController, WKNavigationDelegate {
             self.dismiss(animated: true, completion: nil)
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == nameHandleCloseApp, let messageBody = message.body as? String {
+            if (messageBody == "close") {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
 }
 
