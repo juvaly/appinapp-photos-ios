@@ -10,10 +10,11 @@ import Foundation
 import UIKit
 import WebKit
 
-class WebViewContainerViewController: UIViewController {
+class WebViewContainerViewController: UIViewController, WKNavigationDelegate {
     private let webView = WKWebView(frame: UIScreen.main.bounds)
 
     override func loadView() {
+        webView.navigationDelegate = self
         view = webView
     }
 
@@ -21,6 +22,16 @@ class WebViewContainerViewController: UIViewController {
         guard let url = URL(string: "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com/?apiKey=\(apiKey)")  else { return }
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+    
+    func webView(_ webView: WKWebView,
+                 didFailProvisionalNavigation navigation: WKNavigation!,
+                 withError error: Error) {
+        let alert = UIAlertController(title: "No Internet connection. Please try again later!", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title:"OK", style: .default, handler: { _ in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
