@@ -27,16 +27,17 @@ class WebViewContainerViewController: UIViewController, WKNavigationDelegate, WK
         
         self.webView = WKWebView(frame: UIScreen.main.bounds, configuration: config)
     }
-
+    
     override func loadView() {
         webView?.navigationDelegate = self
         view = webView
     }
-
-    func loadRequest(with apiKey: String) {
-        guard let url = URL(string: "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com/?apiKey=\(apiKey)")  else { return }
+    
+    func loadRequest(with apiKey: String, showChat: Bool) {
+        guard let url = URL(string: "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com\(showChat ? "/chat" : "")/?apiKey=\(apiKey)")  else { return }
         let request = URLRequest(url: url)
         webView?.load(request)
+        
     }
     
     func webView(_ webView: WKWebView,
@@ -58,15 +59,22 @@ class WebViewContainerViewController: UIViewController, WKNavigationDelegate, WK
 }
 
 public class PhotoApp {
-
-    static public func open(with apiKey: String) {
+    static private func _open(with apiKey: String, showChat: Bool = false) {
         guard let viewController = UIApplication.shared.keyWindow!.rootViewController else { return }
-
+        
         let webViewContainerViewController = WebViewContainerViewController()
-        webViewContainerViewController.loadRequest(with: apiKey)
+        webViewContainerViewController.loadRequest(with: apiKey, showChat: showChat)
         viewController.present(webViewContainerViewController, animated: true)
     }
-
+    
+    static public func open(with apiKey: String) {
+        PhotoApp._open(with: apiKey)
+    }
+    
+    static public func showChat(with apiKey: String) {
+        PhotoApp._open(with: apiKey, showChat: true)
+    }
+    
     static public func close() {
         guard let topViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
         topViewController.dismiss(animated: true)

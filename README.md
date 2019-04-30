@@ -1,6 +1,6 @@
 # Usage
 
-Add in ```Podfile``` ``` pod 'AppinappPhotosIos', :git => 'https://github.com/juvaly/appinapp-photos-ios.git', :tag => '0.2.0'```
+Add in ```Podfile``` ``` pod 'AppinappPhotosIos', :git => 'https://github.com/juvaly/appinapp-photos-ios.git', :tag => '0.3.0'```
 
 In code
 ```swift
