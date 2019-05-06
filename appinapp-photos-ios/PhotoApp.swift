@@ -34,7 +34,7 @@ class WebViewContainerViewController: UIViewController, WKNavigationDelegate, WK
     }
     
     func loadRequest(with apiKey: String, showChat: Bool) {
-        guard let url = URL(string: "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com\(showChat ? "/chat" : "")/?apiKey=\(apiKey)")  else { return }
+        guard let url = URL(string: "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com\(showChat ? "/chat" : "")/?apiKey=\(apiKey)&deviceId=\(UIDevice.current.identifierForVendor!.uuidString)")  else { return }
         let request = URLRequest(url: url)
         webView?.load(request)
         

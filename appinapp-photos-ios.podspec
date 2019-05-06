@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "AppinappPhotosIos"
-  s.version      = "0.3.0"
+  s.version      = "0.4.0"
   s.summary      = "appinapp-photos-ios"
 
   # This description is used to generate tags and improve search results.
