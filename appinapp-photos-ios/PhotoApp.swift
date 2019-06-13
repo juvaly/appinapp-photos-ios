@@ -16,6 +16,7 @@ class WebViewContainerViewController: UIViewController, WKNavigationDelegate, WK
     
     convenience init( ) {
         self.init(nibName:nil, bundle:nil)
+        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         
         let config = WKWebViewConfiguration()
         let userContentController = WKUserContentController()
