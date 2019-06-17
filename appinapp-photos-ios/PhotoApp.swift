@@ -35,10 +35,9 @@ class WebViewContainerViewController: UIViewController, WKNavigationDelegate, WK
     }
     
     func loadRequest(with apiKey: String, showChat: Bool) {
-        guard let url = URL(string: "https://dev.stickies.co.il\(showChat ? "/chat" : "")/?apiKey=\(apiKey)&deviceId=\(UIDevice.current.identifierForVendor!.uuidString)")  else { return }
+        guard let url = URL(string: "https://www.stickies.co.il\(showChat ? "/chat" : "")/?apiKey=\(apiKey)&deviceId=\(UIDevice.current.identifierForVendor!.uuidString)")  else { return }
         let request = URLRequest(url: url)
         webView?.load(request)
-        
     }
     
     func webView(_ webView: WKWebView,
