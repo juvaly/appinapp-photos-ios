@@ -34,8 +34,8 @@ class WebViewContainerViewController: UIViewController, WKNavigationDelegate, WK
         view = webView
     }
     
-    func loadRequest(with apiKey: String, showChat: Bool) {
-        guard let url = URL(string: "https://www.stickies.co.il\(showChat ? "/chat" : "")/?apiKey=\(apiKey)&deviceId=\(UIDevice.current.identifierForVendor!.uuidString)")  else { return }
+    func loadRequest(with apiKey: String, showChat: Bool, link: String = "") {
+        guard let url = URL(string: "https://www.stickies.co.il\(showChat && link != "" ? "/chat" : "")\(link)/?apiKey=\(apiKey)&deviceId=\(UIDevice.current.identifierForVendor!.uuidString)")  else { return }
         let request = URLRequest(url: url)
         webView?.load(request)
     }
@@ -59,16 +59,16 @@ class WebViewContainerViewController: UIViewController, WKNavigationDelegate, WK
 }
 
 public class PhotoApp {
-    static private func _open(with apiKey: String, showChat: Bool = false) {
+    static private func _open(with apiKey: String, showChat: Bool = false, link: String = "") {
         guard let viewController = UIApplication.shared.keyWindow!.rootViewController else { return }
         
         let webViewContainerViewController = WebViewContainerViewController()
-        webViewContainerViewController.loadRequest(with: apiKey, showChat: showChat)
+        webViewContainerViewController.loadRequest(with: apiKey, showChat: showChat, link: link)
         viewController.present(webViewContainerViewController, animated: true)
     }
     
-    static public func open(with apiKey: String) {
-        PhotoApp._open(with: apiKey)
+    static public func open(with apiKey: String, link: String = "") {
+        PhotoApp._open(with: apiKey, link: link)
     }
     
     static public func showChat(with apiKey: String) {
